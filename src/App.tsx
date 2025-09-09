@@ -17,7 +17,7 @@ const queryClient = new QueryClient({
   },
 })
 
-const router = createAppRouter(queryClient)
+const router = createAppRouter()
 
 export const App = () => {
   return (

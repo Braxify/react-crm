@@ -10,14 +10,14 @@ import {
 
 import type { Virtualizer } from '@tanstack/react-virtual'
 
-export type TableColumn<T> = {
+export type TableColumn<T extends object> = {
   key: keyof T | string
   header: string
   className?: string
   render?: (value: unknown, row: T) => React.ReactNode
 }
 
-type TableProps<T> = {
+type TableProps<T extends object> = {
   caption?: string
   columns: TableColumn<T>[]
   data: T[]
@@ -26,7 +26,7 @@ type TableProps<T> = {
   onRowClick?: (row: T, rowIndex: number) => void
 }
 
-export function Table<T>({
+export function Table<T extends object>({
   caption,
   columns,
   data,
@@ -34,13 +34,13 @@ export function Table<T>({
   virtualizer,
   onRowClick,
 }: TableProps<T>) {
-  const items = virtualizer!.getVirtualItems() || []
+  const items = virtualizer?.getVirtualItems() || []
   const rows = virtualizer ? items : data.map((_, i) => ({ index: i }))
 
   return (
     <div
       style={{
-        height: virtualizer!.getTotalSize(),
+        height: virtualizer?.getTotalSize() ?? 'auto',
         width: '100%',
         position: 'relative',
       }}

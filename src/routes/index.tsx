@@ -6,9 +6,7 @@ import { CustomerDetails } from '@/pages/CustomerDetails'
 import { HomePage } from '@/pages/Home'
 import { Path } from '@/shared/constants/path.ts'
 
-import type { QueryClient } from '@tanstack/react-query'
-
-export const createAppRouter = (queryClient: QueryClient) => {
+export const createAppRouter = () => {
   return createBrowserRouter([
     {
       element: <DashboardLayout />,
