@@ -6,13 +6,16 @@ import { defineConfig } from 'vitest/config'
 
 import path from 'path'
 
+const repoName = 'react-crm'
+
 // https://vite.dev/config/
-export default defineConfig({
+export default defineConfig(() => ({
   plugins: [react(), tsconfigPaths(), svgr(), tailwindcss()],
+  base: `/${repoName}/`,
   test: {
-    globals: true, // Enables global describe, it, expect, vi
-    environment: 'jsdom', // Required for React Testing Library
-    setupFiles: ['./setupTests.ts'], // Loads jest-dom matchers
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: ['./setupTests.ts'],
   },
   server: {
     watch: {
@@ -27,4 +30,4 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
-})
+}))

@@ -1,7 +1,7 @@
 import axios, { type AxiosInstance } from 'axios'
 
 export const getApiInstance = (): AxiosInstance => {
-  const api = axios.create({ baseURL: '' })
+  const api = axios.create({ baseURL: import.meta.env.BASE_URL })
 
   api.interceptors.response.use(
     (response) => response,
