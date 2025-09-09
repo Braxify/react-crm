@@ -7,23 +7,23 @@ import * as React from 'react'
 
 import { useIsMobile } from '@/hooks/use-mobile'
 import { cn } from '@/lib/utils'
-import { Button } from '@/shared/components/ui/button'
-import { Input } from '@/shared/components/ui/input'
-import { Separator } from '@/shared/components/ui/separator'
+import { Button } from '@/shared/components/layout/button'
+import { Input } from '@/shared/components/layout/input'
+import { Separator } from '@/shared/components/layout/separator'
 import {
   Sheet,
   SheetContent,
   SheetDescription,
   SheetHeader,
   SheetTitle,
-} from '@/shared/components/ui/sheet'
-import { Skeleton } from '@/shared/components/ui/skeleton'
+} from '@/shared/components/layout/sheet'
+import { Skeleton } from '@/shared/components/layout/skeleton'
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '@/shared/components/ui/tooltip'
+} from '@/shared/components/layout/tooltip'
 
 const SIDEBAR_COOKIE_NAME = 'sidebar_state'
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7

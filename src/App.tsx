@@ -4,7 +4,7 @@ import dayjs from 'dayjs'
 import { RouterProvider } from 'react-router'
 
 import { createAppRouter } from '@/routes'
-import { Toaster } from '@/shared/components/ui/toaster'
+import { Toaster } from '@/shared/components/layout/toaster'
 import { Time } from '@/shared/constants/time'
 
 dayjs.locale('ua')
