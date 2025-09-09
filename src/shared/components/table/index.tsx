@@ -23,16 +23,24 @@ type TableProps<T> = {
   data: T[]
   rowKey?: (row: T, index: number) => string | number
   virtualizer?: Virtualizer<HTMLDivElement, any>
+  onRowClick?: (row: T, rowIndex: number) => void
 }
 
-export function Table<T>({ caption, columns, data, rowKey, virtualizer }: TableProps<T>) {
-  const items = virtualizer.getVirtualItems() || []
+export function Table<T>({
+  caption,
+  columns,
+  data,
+  rowKey,
+  virtualizer,
+  onRowClick,
+}: TableProps<T>) {
+  const items = virtualizer!.getVirtualItems() || []
   const rows = virtualizer ? items : data.map((_, i) => ({ index: i }))
 
   return (
     <div
       style={{
-        height: virtualizer.getTotalSize(),
+        height: virtualizer!.getTotalSize(),
         width: '100%',
         position: 'relative',
       }}
@@ -65,7 +73,11 @@ export function Table<T>({ caption, columns, data, rowKey, virtualizer }: TableP
               const row = data[rowIndex]
 
               return (
-                <TableRow key={rowKey ? rowKey(row, rowIndex) : rowIndex}>
+                <TableRow
+                  key={rowKey ? rowKey(row, rowIndex) : rowIndex}
+                  onClick={() => onRowClick?.(row, rowIndex)}
+                  style={onRowClick ? { cursor: 'pointer' } : undefined}
+                >
                   {columns.map((col, colIndex) => {
                     const value =
                       typeof col.key === 'string' && col.key in row ? (row as any)[col.key] : null

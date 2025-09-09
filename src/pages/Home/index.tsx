@@ -1,21 +1,23 @@
 import { useMutation } from '@tanstack/react-query'
 import { useVirtualizer } from '@tanstack/react-virtual'
 import { useRef, useState } from 'react'
+import { useNavigate } from 'react-router'
 import { useMount } from 'react-use'
 import { toast } from 'sonner'
-
-import { useCustomers } from './hooks/use-customers'
 
 import { Avatar } from '@/shared/components/avatar'
 import { Input } from '@/shared/components/input'
 import { Button } from '@/shared/components/layout/button'
 import { Spinner } from '@/shared/components/spinner'
 import { Table, type TableColumn } from '@/shared/components/table'
+import { useCustomers } from '@/shared/hooks/use-customers'
 
 import type { ICustomer } from '@/models/customer'
 
 export const HomePage = () => {
   const parentRef = useRef<HTMLDivElement>(null)
+
+  const navigate = useNavigate()
 
   const [firstName, setFirstName] = useState<string>('')
   const [lastName, setLastName] = useState<string>('')
@@ -53,6 +55,10 @@ export const HomePage = () => {
     setFirstName('')
     setLastName('')
     setEmail('')
+  }
+
+  const navigateToCustomer = (customer: ICustomer) => {
+    navigate(`/customer/${customer.email}`)
   }
 
   const rowVirtualizer = useVirtualizer({
@@ -159,6 +165,7 @@ export const HomePage = () => {
               columns={columns}
               data={filteredCustomers}
               virtualizer={rowVirtualizer}
+              onRowClick={(customer: ICustomer) => navigateToCustomer(customer)}
             />
           </div>
         </div>
