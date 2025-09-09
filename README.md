@@ -1,69 +1,50 @@
-# React + TypeScript + Vite
+# React CRM
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A small CRM project on React + Vite, built with an emphasis on development convenience, performance, and a modern stack.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Stack
 
-## Expanding the ESLint configuration
+### Libraries I've used
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- **[@tanstack/react-query](https://tanstack.com/query/latest)**  
+  For working with server data (loading, caching, synchronization).
+  It's way better than writing my own wrappers with useEffect etc.
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- **[@tanstack/react-virtual](https://tanstack.com/virtual/latest)**  
+  For virtualizing long lists and tables.  
+  Even with large count of rows, rendering remains fast because only visible elements are added to the DOM.
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+- **[tailwindcss](https://tailwindcss.com/)**  
+  "Rapidly build modern websites without ever leaving your HTML."
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- **[shadcn/ui](https://ui.shadcn.com/)**  
+  A set of headless components.
+  It looks cool and the future is here :)
+
+- **[sonner](https://sonner.emilkowal.ski/)**  
+  Lightweight library for notificationss.
+
+- **[react-use](https://github.com/streamich/react-use)**  
+  A collection of hooks for React. (`useMount`, `useWindowSize`). I don't need to write my own hooks.
+
+- **[husky](https://typicode.github.io/husky/)**  
+  Allows me to run scripts before executing git commits.
+  I use it with prettier and eslint.
+
+---
+
+## Launching the project
+
+### Installing dependencies
+
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Starting the project
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm run dev
 ```
