@@ -1,9 +1,8 @@
-import { useMutation } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 import { useVirtualizer } from '@tanstack/react-virtual'
 import dayjs from 'dayjs'
 import { useEffect, useRef } from 'react'
 import { useNavigate, useParams } from 'react-router'
-import { useMount } from 'react-use'
 import { toast } from 'sonner'
 
 import { useOrders } from './hooks/use-orders'
@@ -25,35 +24,48 @@ export const CustomerDetails = () => {
   const { fetchOrders } = useOrders()
 
   const parentRef = useRef<HTMLDivElement>(null)
-
   // Customers
   const {
     data: customers = [],
-    mutate: fetchCustomersMutate,
-    isPending: isFetchCustomersPending,
+    isLoading: isFetchCustomersPending,
     isSuccess: isFetchCustomersSuccess,
-  } = useMutation({ mutationFn: fetchCustomers })
+    isError,
+    error,
+  } = useQuery({
+    queryKey: ['customers'],
+    queryFn: fetchCustomers,
+  })
 
-  useMount(fetchCustomersMutate)
+  useEffect(() => {
+    if (isError) {
+      toast.error('Failed to load customers', {
+        description: error instanceof Error ? error.message : 'Unknown error occurred',
+      })
+    }
+  }, [isError, error])
 
   const customer = customers.find((c) => c.email.toLowerCase() === email?.toLowerCase())
 
   // Orders
   const {
     data: orders = [],
-    mutate: fetchOrdersMutate,
-    isPending: isFetchOrdersPending,
+    isLoading: isFetchOrdersPending,
     isSuccess: isFetchOrdersSuccess,
-  } = useMutation({
-    mutationFn: fetchOrders,
-    onError: (err) => {
-      toast.error('Failed to load orders', {
-        description: err instanceof Error ? err.message : 'Unknown error occurred',
-      })
-    },
+    isError: isFetchOrdersError,
+    error: fetchOrdersError,
+  } = useQuery({
+    queryKey: ['orders'],
+    queryFn: fetchOrders,
   })
 
-  useMount(fetchOrdersMutate)
+  useEffect(() => {
+    if (isFetchOrdersError) {
+      toast.error('Failed to load orders', {
+        description:
+          fetchOrdersError instanceof Error ? fetchOrdersError.message : 'Unknown error occurred',
+      })
+    }
+  }, [isFetchOrdersError, fetchOrdersError])
 
   const rowVirtualizer = useVirtualizer({
     count: orders.length,
@@ -68,7 +80,7 @@ export const CustomerDetails = () => {
     }
   }, [isFetchCustomersSuccess, customer, navigate])
 
-  // TODO: check th at the dates are correct
+  // TODO: check that the dates are correct
   const orderColumns: TableColumn<IOrder>[] = [
     { key: 'number', header: 'Number', className: 'w-[100px]' },
     { key: 'amount', header: 'Amount', className: 'w-[100px]' },

@@ -1,8 +1,7 @@
-import { useMutation } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 import { useVirtualizer } from '@tanstack/react-virtual'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router'
-import { useMount } from 'react-use'
 import { toast } from 'sonner'
 
 import { Avatar } from '@/shared/components/avatar'
@@ -28,19 +27,22 @@ export const HomePage = () => {
 
   const {
     data: customers = [],
-    mutate: fetchCustomersMutate,
-    isPending: isFetchCustomersPending,
+    isLoading: isFetchCustomersPending,
     isSuccess: isFetchCustomersSuccess,
-  } = useMutation({
-    mutationFn: fetchCustomers,
-    onError: (err) => {
-      toast.error('Failed to load customers', {
-        description: err instanceof Error ? err.message : 'Unknown error occurred',
-      })
-    },
+    isError,
+    error,
+  } = useQuery({
+    queryKey: ['customers'],
+    queryFn: fetchCustomers,
   })
 
-  useMount(fetchCustomersMutate)
+  useEffect(() => {
+    if (isError) {
+      toast.error('Failed to load customers', {
+        description: error instanceof Error ? error.message : 'Unknown error occurred',
+      })
+    }
+  }, [isError, error])
 
   const filteredCustomers = customers.filter((customer) => {
     const matchesFirstName =
@@ -58,6 +60,7 @@ export const HomePage = () => {
     setFirstName('')
     setLastName('')
     setEmail('')
+    setCountry('')
   }
 
   const navigateToCustomer = (customer: ICustomer) => {
