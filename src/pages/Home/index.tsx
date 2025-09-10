@@ -22,6 +22,7 @@ export const HomePage = () => {
   const [firstName, setFirstName] = useState<string>('')
   const [lastName, setLastName] = useState<string>('')
   const [email, setEmail] = useState<string>('')
+  const [country, setCountry] = useState<string>('')
 
   const { fetchCustomers } = useCustomers()
 
@@ -47,8 +48,10 @@ export const HomePage = () => {
     const matchesLastName =
       !lastName || customer.lastName?.toLowerCase().includes(lastName.toLowerCase())
     const matchesEmail = !email || customer.email?.toLowerCase().includes(email.toLowerCase())
+    const matchesCountry =
+      !country || customer.country?.toLowerCase().includes(country.toLowerCase())
 
-    return matchesFirstName && matchesLastName && matchesEmail
+    return matchesFirstName && matchesLastName && matchesEmail && matchesCountry
   })
 
   const resetFilters = () => {
@@ -88,6 +91,11 @@ export const HomePage = () => {
     {
       key: 'email',
       header: 'E-mail',
+      className: 'w-[150px] sticky top-0 bg-white dark:bg-gray-800',
+    },
+    {
+      key: 'country',
+      header: 'Country',
       className: 'min-w-[250px] truncate sticky top-0 bg-white dark:bg-gray-800',
     },
   ]
@@ -145,6 +153,22 @@ export const HomePage = () => {
                 placeholder='Filter by email'
                 className='mt-1 w-full'
                 id='email'
+              />
+            </div>
+            <div className='flex-1 min-w-0'>
+              <label
+                className='block text-sm font-medium text-gray-700 dark:text-gray-200'
+                htmlFor='country'
+              >
+                Country
+              </label>
+              <Input
+                type='text'
+                value={country}
+                onChange={(e) => setCountry(e.target.value)}
+                placeholder='Filter by country'
+                className='mt-1 w-full'
+                id='country'
               />
             </div>
             <Button
